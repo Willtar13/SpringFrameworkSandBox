@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+">
+
+    <!--Load the properties file: sport.properties-->
+    <context:property-placeholder location="classpath:sport3.properties"/>
+
+    <!-- Define the beans in this file, use them anywhere without changing the source code, this could be very useful for all kinds of shit especially factories
+    for listeners etc.-->
+
+    <!-- Define the dependency -->
+    <bean id="myFortune"
+          class="com.HappyFortuneService">
+    </bean>
+
+    <bean id="myCoach"
+          class="com.HockeyCoach">
+
+        <!-- set up constructor injection -->
+        <constructor-arg ref="myFortune"/>
+
+    </bean>
+
+    <bean id="myCricketCoach"
+          class="com.CricketCoach">
+
+        <!--set up dependency setter injection-->
+        <property name="fortuneService" ref="myFortune" />
+
+        <!--set up literal value injection with setter-->
+<!--    <property name="emailAddress" value="fuckYou@gmail.com" />
+        <property name="team" value="analPenetrators" />-->
+<!--    <property name="year" value="1980.123456" />-->
+
+<!--        The foo values can be set to anything as long as they match the configuration file, in this case sport.properties-->
+        <property name="emailAddress" value="${foo.email}" />
+        <property name="team" value="${foo.team}" />
+        <property name="year" value="${foo.year}" />
+
+
+    </bean>
+
+</beans>
